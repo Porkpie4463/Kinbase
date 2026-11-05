@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Kinbase — Business Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------
+   Kinbase — one sky, six moments.
+   #0099FF sky · #FDFDFE white · #FA2503 signal
+   Every diagram is plain SVG: transform / opacity / dashoffset only.
+----------------------------------------------------------------*/
+
+:root{
+  --white:#FDFDFE;
+  --sky:#0099FF;
+  --sky-deep:#0072C6;
+  --signal:#FA2503;
+
+  --ink:#04121E;
+  --ink-70:#1E3143;
+  --ink-60:#3B5163;
+  --ink-45:#55697A;
+  --signal-ink:#B01800;
+  --sky-ink:#005A9E;
+
+  --line:rgba(4,18,30,.14);
+  --line-soft:rgba(4,18,30,.08);
+
+  --serif:"Instrument Serif","Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,"IBM Plex Mono",Menlo,Consolas,monospace;
+
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-glide:cubic-bezier(.4,0,.2,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  background:#02090F;color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
+}
+button{font:inherit;color:inherit}
+
+/* ---------- stage ---------- */
+
+.viewport{
+  position:fixed;inset:0;overflow:hidden;
+  background:radial-gradient(120% 120% at 50% 0%,#0A1520 0%,#02070C 100%);
+}
+.stage{
+  position:absolute;top:50%;left:50%;
+  width:1600px;height:900px;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  transform-origin:center center;
+  background:var(--white);
+  overflow:hidden;
+  box-shadow:0 50px 140px rgba(0,10,20,.55);
+  --c-top:rgba(253,253,254,.9);
+  --c-bot:var(--ink-45);
+  --c-line:rgba(4,18,30,.18);
+  --c-active:var(--signal);
+  --c-sun:var(--signal);
+  --enter-y:26px;
+}
+.stage[data-dir="back"]{--enter-y:-26px}
+.stage[data-theme="dawn"]{--c-top:rgba(253,253,254,.9);--c-bot:var(--ink-45)}
+
+/* ---------- slides ---------- */
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:76px 96px 72px;
+  background:var(--white);
+  color:var(--ink);
+  opacity:0;visibility:hidden;pointer-events:none;
+  contain:layout paint;
+}
+.slide:not(.slide--cover){justify-content:center}
+.slide[data-state="active"]{
+  opacity:1;visibility:visible;pointer-events:auto;z-index:2;
+  transition:opacity 760ms var(--ease-glide);
+}
+.slide.is-leaving{
+  opacity:1;visibility:visible;pointer-events:none;z-index:1;
+  transition:opacity 220ms var(--ease-out);
+}
+/* the old slide's content lifts away while the new sky dissolves over it */
+.slide.is-leaving .enter{
+  opacity:0;
+  transform:translate3d(0,calc(var(--enter-y,26px) * -.42),0);
+  transition:opacity 230ms var(--ease-out),transform 380ms var(--ease-out);
+}
+.slide.is-leaving .panel{transform:none!important;transition:none!important}
+.slide.is-leaving .ui-fill,
+.slide.is-leaving .ui-status-fill{transform:scaleX(1)!important;transition:none!important}
+
+/* one sky, six moments — same recipe, altitude and light shifted */
+.slide--cover{
+  background:
+    radial-gradient(44% 28% at 74% 40%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 70%),
+    radial-gradient(70% 30% at 46% 98%,rgba(255,255,255,.8) 0%,rgba(255,255,255,0) 68%),
+    linear-gradient(180deg,#004B87 0%,#0065B2 14%,#0090F2 34%,#0099FF 46%,#7AC6FF 66%,#D8EDFF 81%,#FDFDFE 93%);
+}
+.slide--problem{
+  background:
+    radial-gradient(46% 26% at 22% 24%,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 72%),
+    radial-gradient(74% 30% at 62% 98%,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,#003F73 0%,#005A9F 10%,#0079CC 20%,#0089E8 30%,#3AA5EE 42%,#7FC4F4 54%,#D6EDFC 68%,#F4FBFF 82%,#FDFDFE 94%);
+}
+.slide--solution{
+  background:
+    radial-gradient(42% 24% at 80% 15%,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 72%),
+    radial-gradient(78% 30% at 46% 97%,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,#004E8C 0%,#006AB8 9%,#008CE8 18%,#00A0FF 28%,#5BB8FF 42%,#9FD3FF 56%,#DFF1FF 71%,#F6FCFF 85%,#FDFDFE 95%);
+}
+.slide--platform{
+  background:
+    radial-gradient(82% 34% at 58% 99%,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 72%),
+    linear-gradient(180deg,#004B87 0%,#005F9E 9%,#008BDA 18%,#0099FF 26%,#5CB6FF 40%,#A6D7FD 55%,#E6F4FE 70%,#F8FDFF 84%,#FDFDFE 94%);
+}
+.slide--validation{
+  background:
+    radial-gradient(46% 28% at 88% 76%,rgba(250,37,3,.18) 0%,rgba(250,37,3,0) 70%),
+    radial-gradient(40% 22% at 8% 4%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 74%),
+    linear-gradient(180deg,#0A2540 0%,#123E5C 9%,#2E7398 18%,#438CB2 26%,#6AA3BF 40%,#9BC0D2 55%,#D9E8F0 70%,#F4F9FB 84%,#FDFDFE 94%);
+}
+.slide--ask{
+  background:
+    radial-gradient(46% 30% at 78% 66%,rgba(250,37,3,.2) 0%,rgba(250,37,3,0) 68%),
+    radial-gradient(58% 28% at 30% 94%,rgba(255,196,148,.45) 0%,rgba(255,196,148,0) 72%),
+    linear-gradient(180deg,#0B3D63 0%,#0F5479 9%,#3E93C2 18%,#6FA9C4 27%,#A9C6D6 40%,#E4D9CE 54%,#FFF4EA 68%,#FDF9F4 82%,#FDFDFE 94%);
+}
+
+/* the sun — sits on the cover, then glides to the top right */
+.sun{
+  position:absolute;top:268px;right:196px;width:188px;height:188px;
+  pointer-events:none;z-index:3;
+  transform:translate3d(0,0,0);
+  transform-origin:50% 50%;
+  transition:transform 1000ms var(--ease-glide);
+}
+.sun-disc{
+  position:absolute;inset:0;display:block;border-radius:50%;
+  background:radial-gradient(circle at 40% 34%,#FF8B6C 0%,#FF4D26 30%,#FA2503 62%,#D81E00 100%);
+  box-shadow:0 0 120px 40px rgba(250,37,3,.28);
+  transform:scale(1);
+  transform-origin:50% 50%;
+  transition:transform 1220ms var(--ease-glide);
+}
+.stage:not([data-first="true"]) .sun{transform:translate3d(6px,-306px,0)}
+.stage:not([data-first="true"]) .sun-disc{transform:scale(.553191)}
+
+/* a ring and a soft bloom that land with the sun */
+.sun-disc::before,
+.sun-disc::after{content:"";position:absolute;border-radius:50%;pointer-events:none;opacity:0}
+.sun-disc::before{
+  inset:-46px;
+  background:radial-gradient(circle,rgba(255,120,80,.4) 0%,rgba(250,37,3,0) 68%);
+  transform:scale(.84);
+}
+.sun-disc::after{inset:-12px;border:1px solid rgba(255,245,240,.6);transform:scale(.92)}
+.stage.is-sun-moving .sun-disc::before{animation:sunBloom 1300ms 700ms both;animation-timing-function:var(--ease-out)}
+.stage.is-sun-moving .sun-disc::after{animation:sunRing 720ms 900ms both;animation-timing-function:var(--ease-out)}
+@keyframes sunBloom{
+  0%{opacity:0;transform:scale(.84)}
+  34%{opacity:.55}
+  100%{opacity:0;transform:scale(1.16)}
+}
+@keyframes sunRing{
+  0%{opacity:0;transform:scale(.94)}
+  26%{opacity:.5}
+  100%{opacity:0;transform:scale(1.24)}
+}
+
+/* ---------- type ---------- */
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink);
+}
+.slide--validation .eyebrow{color:var(--white)}
+.eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+h1,h2{font-family:var(--serif);font-weight:400;letter-spacing:-.024em}
+h2{font-size:64px;line-height:1.05}
+.lede{font-size:19px;line-height:1.5;color:var(--ink);max-width:42ch;text-wrap:pretty}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+
+/* ---------- entrance motion ---------- */
+
+.enter{opacity:0;transform:translate3d(0,var(--enter-y,26px),0) scale(.992)}
+.slide[data-state="active"] .enter{
+  opacity:1;transform:none;
+  transition:
+    opacity 460ms var(--ease-out) calc(100ms + var(--d,0) * 64ms),
+    transform 700ms var(--ease-out) calc(100ms + var(--d,0) * 64ms);
+}
+/* headings travel a touch further than body copy — depth without extra chrome */
+h1.enter,h2.enter{transform:translate3d(0,calc(var(--enter-y,26px) * 1.35),0)}
+.slide.is-settled .enter{opacity:1!important;transform:none!important;transition:none!important}
+
+/* ---------- chrome ---------- */
+
+.chrome{
+  position:absolute;inset:0;z-index:5;pointer-events:none;
+  transition:opacity 520ms var(--ease-out);
+}
+.stage[data-first="true"] .chrome{opacity:0}
+.brand{
+  position:absolute;top:46px;right:96px;
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--c-top);
+  transition:color 520ms var(--ease-out);
+}
+.brand::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.85}
+.rail{position:absolute;left:96px;bottom:34px;display:flex;pointer-events:auto}
+.rail button{appearance:none;border:0;background:none;padding:13px 0;width:34px;cursor:pointer}
+.rail button span{
+  display:block;height:1px;background:var(--c-line);
+  transition:background-color 320ms var(--ease-out);
+}
+@media (hover:hover) and (pointer:fine){
+  .rail button:hover span{background:var(--c-bot);transition:background-color 160ms ease-out}
+}
+.rail button[aria-current="true"] span{background:var(--c-active)}
+.rail-sun{
+  position:absolute;left:109.5px;bottom:44.5px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--c-sun);pointer-events:none;
+  box-shadow:0 0 0 3px rgba(253,253,254,.16);
+}
+.motion .rail-sun{transition:transform 520ms var(--ease-glide)}
+.counter{
+  position:absolute;right:96px;bottom:38px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  color:var(--c-bot);font-variant-numeric:tabular-nums;
+  transition:color 520ms var(--ease-out);
+}
+
+/* ---------- 01 · cover ---------- */
+
+.cover-top{
+  display:flex;align-items:baseline;justify-content:space-between;
+  color:rgba(253,253,254,.9);position:relative;z-index:1;
+}
+.cover-mid{align-self:flex-start;margin-top:auto;margin-bottom:auto;position:relative;z-index:1;padding-top:20px}
+.cover-word{
+  font-family:var(--serif);font-weight:400;
+  font-size:224px;line-height:.78;letter-spacing:-.045em;
+  margin-left:-8px;color:var(--ink);
+}
+.cover-word.enter{transform:translate3d(0,calc(var(--enter-y,26px) * 1.7),0)}
+.cover-word .dot{color:var(--signal)}
+.cover-title{
+  margin-top:26px;font-family:var(--serif);
+  font-size:46px;line-height:1.14;letter-spacing:-.02em;color:var(--ink-70);
+}
+.cover-bottom{position:relative;z-index:1}
+.cover-sub{
+  font-size:22px;line-height:1.5;font-weight:300;
+  color:rgba(4,18,30,.78);max-width:54ch;text-wrap:pretty;
+}
+.cover-meta{
+  display:flex;align-items:baseline;justify-content:space-between;gap:40px;
+  margin-top:26px;padding-top:20px;border-top:1px solid rgba(4,18,30,.16);
+  font-size:13px;color:var(--ink-45);
+}
+.hint{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+kbd{
+  font-family:var(--mono);font-size:10.5px;line-height:1;
+  padding:5px 7px 6px;border:1px solid rgba(4,18,30,.2);border-radius:3px;
+  color:var(--ink-70);background:rgba(253,253,254,.55);
+}
+
+/* ---------- slide scaffolding ---------- */
+
+.s-eyebrow{flex:none}
+.s-main{margin:30px 0 0;width:100%}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.two-col--copy{grid-template-columns:.88fr 1.12fr}
+.ui-col{display:flex;flex-direction:column;justify-content:flex-start;min-width:0}
+
+/* ---------- panels: a glass tray for real UI ---------- */
+
+.panel{
+  position:relative;width:100%;margin:0;
+  padding:16px 20px 18px;
+  border:1px solid rgba(253,253,254,.6);
+  border-radius:3px;
+  background:linear-gradient(158deg,
+    rgba(253,253,254,.5) 0%,rgba(253,253,254,.3) 54%,rgba(253,253,254,.44) 100%);
+  box-shadow:inset 0 1px 0 rgba(253,253,254,.85);
+  -webkit-backdrop-filter:blur(14px) saturate(1.08);
+  backdrop-filter:blur(14px) saturate(1.08);
+  transform:scale(.97);
+  transition:transform 900ms var(--ease-out) 140ms;
+}
+.slide[data-state="active"] .panel{transform:none}
+.slide.is-settled .panel{transform:none;transition:none}
+.panel-tag{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding-bottom:8px;margin-bottom:14px;
+  border-bottom:1px solid rgba(4,18,30,.14);
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(4,18,30,.82);
+}
+.panel-tag b{font-weight:500;color:rgba(4,18,30,.95)}
+.panel-fig{width:100%}
+
+/* ---------- the component cards ---------- */
+
+.ui{width:100%;min-width:0}
+.ui-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.ui-split--wide{grid-template-columns:1.1fr .9fr;align-items:center;gap:16px}
+.ui-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ui-signals{display:flex;flex-direction:column;gap:10px}
+
+.card{
+  position:relative;
+  background:rgba(253,253,254,.7);
+  border:1px solid rgba(4,18,30,.12);
+  border-radius:6px;
+  -webkit-backdrop-filter:blur(18px) saturate(1.12);
+  backdrop-filter:blur(18px) saturate(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    0 18px 34px -28px rgba(4,18,30,.6);
+}
+.card--soft{background:rgba(253,253,254,.82);border-color:rgba(4,18,30,.1)}
+.card--pad{padding:18px}
+.ui-between{display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+
+/* uniform creator placeholder — silhouettes only, never portraits */
+.avatar{
+  position:relative;flex:none;width:38px;height:38px;border-radius:50%;
+  overflow:hidden;border:1px solid rgba(4,18,30,.14);
+  background:linear-gradient(180deg,rgba(4,18,30,.03),rgba(4,18,30,.075));
+}
+.avatar::before{
+  content:"";position:absolute;left:50%;top:24%;width:11px;height:11px;
+  border-radius:50%;background:rgba(4,18,30,.34);transform:translateX(-50%);
+}
+.avatar::after{
+  content:"";position:absolute;left:50%;top:58%;width:23px;height:19px;
+  border-radius:50% 50% 0 0 / 72% 72% 0 0;
+  background:rgba(4,18,30,.34);transform:translateX(-50%);
+}
+.avatar--sm{width:30px;height:30px}
+.avatar--sm::before{width:8px;height:8px;top:25%}
+.avatar--sm::after{width:18px;height:14px;top:60%}
+
+.ui-kicker{
+  display:block;margin-bottom:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--signal-ink);
+}
+.ui-kicker--sky{color:var(--sky-ink)}
+.ui-kicker--ink{color:var(--ink-60)}
+
+.ui-metric{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:11px}
+.ui-name{font-family:var(--serif);font-size:25px;line-height:1.05;letter-spacing:-.02em}
+.ui-stat{
+  font-family:var(--serif);font-size:43px;line-height:.9;letter-spacing:-.03em;
+  color:#0072C6;font-variant-numeric:tabular-nums lining-nums;
+}
+.ui-track{height:7px;border-radius:3px;background:rgba(4,18,30,.08);overflow:hidden;margin-bottom:14px}
+.ui-fill{
+  display:block;height:100%;width:var(--w,50%);border-radius:3px;
+  background:var(--sky);transform:scaleX(0);transform-origin:left center;
+}
+.ui-metric--sub{margin-bottom:7px}
+.ui-sub{font-size:13px;color:var(--ink-60)}
+.ui-substat{font-family:var(--mono);font-size:13.5px;color:var(--ink-60)}
+.ui-track--slim{height:5px;margin-bottom:0}
+.ui-fill--muted{background:var(--ink-45)}
+
+.ui-title{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.08;letter-spacing:-.02em;margin-bottom:7px}
+.ui-copy{font-size:14px;line-height:1.45;color:var(--ink-70);text-wrap:pretty}
+.ui-foot{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding-top:10px;border-top:1px solid rgba(4,18,30,.1);
+}
+.ui-foot-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-60)}
+.ui-foot-v{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--signal-ink)}
+
+/* fig 02 — briefs & verified profiles */
+
+.ui-brief{
+  background:rgba(253,253,254,.92);border:1px solid rgba(4,18,30,.1);
+  border-radius:4px;overflow:hidden;
+}
+.ui-brief + .ui-brief{margin-top:8px}
+.ui-brief-head{display:flex;align-items:center;gap:10px;padding:12px 12px 10px}
+.ui-mark{
+  flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:4px;
+  border:1px solid rgba(4,18,30,.12);background:rgba(4,18,30,.045);
+  font-family:var(--serif);font-size:14px;line-height:1;color:var(--ink);
+}
+.ui-brief-brand{
+  display:block;margin-bottom:3px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-60);line-height:1.2;
+}
+.ui-brief-title{
+  display:block;font-size:14px;font-weight:600;line-height:1.25;
+  letter-spacing:-.005em;
+}
+.ui-brief-fields{
+  display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end;
+  padding:10px 12px;border-top:1px solid rgba(4,18,30,.09);
+  background:rgba(4,18,30,.018);
+}
+.ui-field-k{
+  display:block;margin-bottom:3px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60);line-height:1.2;white-space:nowrap;
+}
+.ui-field-v{display:block;font-family:var(--mono);font-size:11px;line-height:1.25;color:var(--ink);white-space:nowrap}
+
+.ui-profile{
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;
+  background:rgba(253,253,254,.92);border:1px solid rgba(4,18,30,.1);
+  border-radius:4px;padding:10px;
+}
+.ui-profile + .ui-profile{margin-top:8px}
+.ui-profile-name{display:block;font-size:13px;font-weight:600;line-height:1.25;letter-spacing:-.005em}
+.ui-profile-meta{
+  display:block;font-family:var(--mono);font-size:9.5px;line-height:1.35;color:var(--ink-60);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ui-verified{
+  display:inline-flex;align-items:center;gap:3px;margin-top:3px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.02em;color:var(--ink-60);
+}
+.ui-verified::before{
+  content:"✓";display:grid;place-items:center;width:10px;height:10px;border-radius:50%;
+  background:rgba(0,90,158,.1);color:var(--sky-ink);font-size:7px;line-height:1;
+}
+.ui-badge{
+  flex:none;padding:4px 7px;border-radius:3px;
+  background:rgba(0,90,158,.08);color:var(--sky-ink);
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.04em;white-space:nowrap;
+}
+.ui-badge--sm{padding:3px 6px;font-size:9.5px}
+
+/* fig 03 — the deal & escrow pipeline */
+
+.ui-deal{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:24px;align-items:center;
+  padding:11px 13px;margin-bottom:14px;
+  border:1px solid rgba(4,18,30,.1);border-radius:4px;
+  background:rgba(253,253,254,.55);
+}
+.ui-deal-k{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-60)}
+.ui-deal-v{display:block;margin-top:2px;font-family:var(--serif);font-size:17px;line-height:1.15;letter-spacing:-.01em;white-space:nowrap}
+.ui-deal-v span{font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--ink-60)}
+.ui-deal-amount{text-align:right}
+.ui-deal-amount b{display:block;font-family:var(--mono);font-size:14px;font-weight:600;line-height:1.2;color:var(--signal-ink)}
+.ui-deal-amount span{display:block;margin-top:2px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60)}
+.ui-progress{display:grid;grid-template-columns:auto 1fr auto 1fr auto;align-items:center;gap:8px;min-width:0}
+.ui-progress-step{
+  display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ink-60);white-space:nowrap;
+}
+.ui-progress-step i{flex:none;width:7px;height:7px;border-radius:50%;border:1px solid rgba(4,18,30,.35)}
+.ui-progress-step.is-done,.ui-progress-step.is-now{color:var(--ink)}
+.ui-progress-step.is-done i{background:var(--sky);border-color:var(--sky)}
+.ui-progress-step.is-now i{background:var(--white);border-color:var(--ink);box-shadow:0 0 0 3px rgba(4,18,30,.08)}
+.ui-progress-line{height:1px;background:rgba(4,18,30,.14)}
+.ui-progress-line.is-done{background:var(--sky)}
+
+.ui-steps--deal{align-items:stretch}
+.ui-step{display:flex;flex-direction:column;padding:22px}
+.ui-step .ui-kicker{margin-bottom:12px}
+.ui-step-title{font-family:var(--serif);font-weight:400;font-size:27px;line-height:1.08;letter-spacing:-.02em;margin-bottom:7px}
+.ui-step-copy{font-size:14px;line-height:1.45;color:var(--ink-60);text-wrap:pretty}
+.ui-step-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 4px}
+.ui-step-meta span{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-60);line-height:1.2}
+.ui-step-meta b{display:block;margin-top:2px;font-family:var(--mono);font-size:10px;font-weight:500;color:var(--ink);line-height:1.25}
+.ui-step-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-top:auto;padding-top:14px;border-top:1px solid rgba(4,18,30,.09);
+}
+.ui-step-note{font-family:var(--mono);font-size:9px;letter-spacing:.02em;color:var(--ink-60);white-space:nowrap}
+.ui-step--hold{border-color:rgba(250,37,3,.22);background:rgba(253,250,248,.78)}
+.ui-pill{
+  display:inline-flex;align-items:center;gap:5px;flex:none;
+  padding:4px 7px;border-radius:3px;border:1px solid transparent;
+  font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.07em;
+  line-height:1.2;text-transform:uppercase;white-space:nowrap;
+}
+.ui-pill::before{content:"";width:4px;height:4px;border-radius:50%;background:currentColor}
+.ui-pill--ok{background:rgba(0,90,158,.08);border-color:rgba(0,90,158,.16);color:var(--sky-ink)}
+.ui-pill--hold{background:rgba(250,37,3,.07);border-color:rgba(250,37,3,.16);color:var(--signal-ink)}
+.ui-pill--wait{background:rgba(4,18,30,.045);border-color:rgba(4,18,30,.1);color:var(--ink-60)}
+
+/* fig 04 — signals */
+
+.ui-signal{
+  display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;
+  padding:17px 20px;
+}
+.ui-signal-idx{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--sky-ink)}
+.ui-signal--signal .ui-signal-idx{color:var(--signal-ink)}
+.ui-signal-title{
+  display:block;font-family:var(--serif);font-weight:400;font-size:21px;
+  line-height:1.1;letter-spacing:-.015em;margin-bottom:4px;
+}
+.ui-signal-copy{font-size:13px;line-height:1.45;color:var(--ink-60);text-wrap:pretty}
+
+/* fig 05 — AI match preview */
+
+.ui-ask{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center;
+  padding:18px;
+}
+.ui-ask-title{font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.02;letter-spacing:-.025em;margin-bottom:7px}
+.ui-status{padding:16px}
+.ui-status-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px}
+.ui-status-head .ui-kicker{margin-bottom:0}
+.ui-accuracy{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.02em;color:var(--sky-ink);white-space:nowrap}
+.ui-accuracy small{font-size:8px;font-weight:400;letter-spacing:.04em;color:var(--ink-60)}
+.ui-match-mini{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 0}
+.ui-match-mini + .ui-match-mini{border-top:1px solid rgba(4,18,30,.08)}
+.ui-match-mini .ui-profile-name{font-size:11.5px}
+.ui-match-mini .ui-profile-meta{font-size:9px}
+.ui-score{font-family:var(--serif);font-size:16px;line-height:1;color:var(--sky-ink);font-variant-numeric:tabular-nums}
+.ui-confidence{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:8px;font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60)}
+.ui-status-track{height:5px;border-radius:3px;background:rgba(4,18,30,.08);overflow:hidden;margin-top:5px}
+.ui-status-fill{display:block;height:100%;width:var(--w,92%);border-radius:3px;background:var(--signal);transform:scaleX(0);transform-origin:left center}
+
+.slide[data-state="active"] .ui-fill,
+.slide[data-state="active"] .ui-status-fill{
+  transform:scaleX(1);
+  transition:transform 780ms var(--ease-out) calc(100ms + var(--d,0) * 64ms + 420ms);
+}
+.slide.is-settled .ui-fill,
+.slide.is-settled .ui-status-fill{transform:scaleX(1)!important;transition:none!important}
+
+/* ---------- 02 · problem ---------- */
+
+.problem h2{max-width:16ch;margin-bottom:26px}
+.stat-rows{border-top:1px solid var(--line)}
+.stat-row{
+  display:grid;grid-template-columns:170px 1fr;gap:22px;align-items:baseline;
+  padding:15px 0;border-bottom:1px solid var(--line);
+}
+.stat-k{
+  font-family:var(--serif);font-size:46px;line-height:1;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.stat-k--word{font-size:29px;letter-spacing:-.02em}
+.stat-row p{font-size:16px;line-height:1.45;color:var(--ink);max-width:36ch;text-wrap:pretty}
+
+/* ---------- 03 · solution ---------- */
+
+.solution h2{max-width:10ch;margin-bottom:16px}
+.solution .lede{font-size:18px;max-width:40ch;margin-bottom:26px}
+.offers{border-top:1px solid var(--line)}
+.offer{
+  display:grid;grid-template-columns:44px 1fr;gap:18px;
+  padding:18px 0;border-bottom:1px solid var(--line);align-items:start;
+}
+.offer-idx{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink);padding-top:7px}
+.offer h3{font-family:var(--serif);font-weight:400;font-size:27px;line-height:1.12;letter-spacing:-.015em;margin-bottom:6px}
+.offer p{font-size:15.5px;line-height:1.5;color:var(--ink);max-width:38ch;text-wrap:pretty}
+
+/* ---------- 04 · platform ---------- */
+
+.platform h2{max-width:22ch;margin-bottom:14px}
+.platform .lede{font-size:18px;max-width:52ch;margin-bottom:22px}
+
+/* ---------- 05 · validation ---------- */
+
+.validation h2{max-width:16ch;margin-bottom:24px}
+.insights{border-top:1px solid var(--line)}
+.insight{
+  padding:17px 0;border-bottom:1px solid var(--line);
+}
+.insight p{
+  font-family:var(--serif);font-size:29px;line-height:1.22;
+  letter-spacing:-.015em;max-width:34ch;
+}
+
+/* ---------- 06 · the ask ---------- */
+
+.ask h2{max-width:none;font-size:62px;margin-bottom:18px}
+.ask-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ask-step + .ask-step{margin-top:18px;padding-top:16px;border-top:1px solid rgba(4,18,30,.28)}
+.step-label{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(4,18,30,.72);margin-bottom:7px;
+}
+.ask-step p{font-size:17px;line-height:1.5;max-width:40ch;text-wrap:pretty}
+.ask-foot{
+  position:absolute;left:96px;right:96px;bottom:110px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:40px;
+  padding-top:16px;border-top:1px solid rgba(4,18,30,.28);
+}
+.thanks{font-family:var(--serif);font-size:56px;line-height:1;letter-spacing:-.03em}
+.thanks .dot{color:var(--signal)}
+.ask-sign{font-size:12.5px;color:rgba(4,18,30,.8)}
+
+/* ---------- grain (static, no blend mode) ---------- */
+
+.grain{
+  position:absolute;inset:0;z-index:4;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px 160px;
+}
+
+/* a sheen of light that crosses the stage on every slide change */
+
+.sweep{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.sweep::before{
+  content:"";position:absolute;top:-28%;left:0;width:44%;height:156%;
+  background:linear-gradient(100deg,
+    rgba(255,255,255,0) 0%,rgba(255,255,255,.08) 44%,
+    rgba(255,255,255,.18) 50%,rgba(255,255,255,.08) 56%,rgba(255,255,255,0) 100%);
+  opacity:0;transform:translate3d(-150%,0,0) skewX(-14deg);
+}
+.stage.is-sweeping .sweep::before{animation:sweepFwd 1200ms both;animation-timing-function:var(--ease-glide)}
+.stage.is-sweeping[data-dir="back"] .sweep::before{animation-name:sweepBack}
+@keyframes sweepFwd{
+  0%{opacity:0;transform:translate3d(-150%,0,0) skewX(-14deg)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate3d(330%,0,0) skewX(-14deg)}
+}
+@keyframes sweepBack{
+  0%{opacity:0;transform:translate3d(330%,0,0) skewX(-14deg)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate3d(-150%,0,0) skewX(-14deg)}
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce){
+  .enter,h1.enter,h2.enter,.cover-word.enter{opacity:1;transform:none}
+  .slide[data-state="active"] .enter{transition:none}
+  .slide.is-leaving .enter{transition:none}
+  .slide[data-state="active"]{transition:none}
+  .panel{transform:none;transition:none}
+  .sun,.sun-disc{transition:none}
+  .sun-disc::before,.sun-disc::after,.sweep{display:none}
+  .chrome,.brand,.counter,.rail button span{transition:none}
+  .ui-fill,.ui-status-fill{transform:scaleX(1)}
+  .motion .rail-sun{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="viewport">
+  <main class="stage" id="stage" data-theme="dawn" data-first="true">
+
+    <!-- 01 · title -->
+    <article class="slide slide--cover" data-theme="dawn" data-label="Title" data-state="active">
+      <div class="cover-top enter" style="--d:0">
+        <span class="mono">Business pitch</span>
+        <span class="mono">2026</span>
+      </div>
+
+      <div class="cover-mid">
+        <h1 class="cover-word enter" style="--d:1">Kinbase<span class="dot">.</span></h1>
+        <p class="cover-title enter" style="--d:2">Unlocking the power of small creators.</p>
+      </div>
+
+      <div class="cover-bottom">
+        <p class="cover-sub enter" style="--d:3">
+          Empowering small creators and connecting brands with authentic, high-converting partnerships.
+        </p>
+        <div class="cover-meta enter" style="--d:4">
+          <span>Oscar &middot; Founder, Kinbase</span>
+          <span class="hint">Press <kbd>&rarr;</kbd> to begin</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 · the problem -->
+    <article class="slide slide--problem" data-theme="dawn" data-label="The problem">
+      <div class="s-eyebrow"><span class="eyebrow enter" style="--d:0">The problem</span></div>
+
+      <div class="s-main two-col two-col--copy">
+        <div>
+          <h2 class="enter" style="--d:1">The creator economy is broken.</h2>
+
+          <div class="stat-rows">
+            <div class="stat-row enter" style="--d:2">
+              <span class="stat-k">60%</span>
+              <p>more engagement from small creators than from celebrity influencers.</p>
+            </div>
+            <div class="stat-row enter" style="--d:4">
+              <span class="stat-k stat-k--word">Thousands</span>
+              <p>spent by brands navigating gatekeepers and talent agencies.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="enter ui-col" style="--d:2">
+          <figure class="panel panel--ui">
+            <div class="panel-tag"><b>Fig. 01</b><span>The creator gap</span></div>
+            <div class="panel-fig">
+              <div class="ui-split" role="group" aria-label="Engagement rate and market friction">
+                <div class="card card--pad">
+                  <span class="ui-kicker">Engagement rate</span>
+                  <div class="ui-metric">
+                    <span class="ui-name">Micro creators</span>
+                    <span class="ui-stat">6.4%</span>
+                  </div>
+                  <div class="ui-track"><i class="ui-fill" style="--w:85%"></i></div>
+                  <div class="ui-metric ui-metric--sub">
+                    <span class="ui-sub">Celebrity / Macro</span>
+                    <span class="ui-substat">1.5%</span>
+                  </div>
+                  <div class="ui-track ui-track--slim"><i class="ui-fill ui-fill--muted" style="--w:20%"></i></div>
+                </div>
+
+                <div class="card card--pad ui-between">
+                  <div>
+                    <span class="ui-kicker">Market friction</span>
+                    <h4 class="ui-title">90% Locked Out</h4>
+                    <p class="ui-copy">Small creators are stonewalled by agency gatekeepers and lack direct channels.</p>
+                  </div>
+                  <div class="ui-foot">
+                    <span class="ui-foot-k">Middleman fee</span>
+                    <span class="ui-foot-v">25% – 50%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 · the solution -->
+    <article class="slide slide--solution" data-theme="dawn" data-label="The solution">
+      <div class="s-eyebrow"><span class="eyebrow enter" style="--d:0">The solution</span></div>
+
+      <div class="s-main two-col two-col--copy solution">
+        <div>
+          <h2 class="enter" style="--d:1">Meet Kinbase.</h2>
+          <p class="lede enter" style="--d:2">
+            An influencer marketing marketplace designed specifically to empower small creators
+            and bridge the gap for brands.
+          </p>
+
+          <div class="offers">
+            <div class="offer enter" style="--d:3">
+              <span class="offer-idx">01</span>
+              <div>
+                <h3>Open campaign briefs</h3>
+                <p>Brands post open campaign briefs for small creators to apply to.</p>
+              </div>
+            </div>
+            <div class="offer enter" style="--d:4">
+              <span class="offer-idx">02</span>
+              <div>
+                <h3>A verified marketplace</h3>
+                <p>Brands actively search the marketplace to discover and pitch creators directly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="enter ui-col" style="--d:2">
+          <figure class="panel panel--ui">
+            <div class="panel-tag"><b>Fig. 02</b><span>The marketplace</span></div>
+            <div class="panel-fig">
+              <div class="ui-split" role="group" aria-label="Open campaign briefs and verified creator profiles">
+                <div class="card card--pad">
+                  <span class="ui-kicker ui-kicker--sky">Open campaign briefs</span>
+                  <div class="ui-brief">
+                    <div class="ui-brief-head">
+                      <span class="ui-mark" aria-hidden="true">A</span>
+                      <div>
+                        <span class="ui-brief-brand">Astra Tech</span>
+                        <span class="ui-brief-title">Q4 Social Drive</span>
+                      </div>
+                    </div>
+                    <div class="ui-brief-fields">
+                      <div><span class="ui-field-k">Required reach</span><span class="ui-field-v">Micro 5K–20K</span></div>
+                      <div><span class="ui-field-k">Content format</span><span class="ui-field-v">Short-form</span></div>
+                      <span class="ui-badge ui-badge--sm">88% match</span>
+                    </div>
+                  </div>
+                  <div class="ui-brief">
+                    <div class="ui-brief-head">
+                      <span class="ui-mark" aria-hidden="true">E</span>
+                      <div>
+                        <span class="ui-brief-brand">Eco Solutions</span>
+                        <span class="ui-brief-title">Green Future</span>
+                      </div>
+                    </div>
+                    <div class="ui-brief-fields">
+                      <div><span class="ui-field-k">Required reach</span><span class="ui-field-v">Nano</span></div>
+                      <div><span class="ui-field-k">Content format</span><span class="ui-field-v">UGC review</span></div>
+                      <span class="ui-badge ui-badge--sm">84% match</span>
+                    </div>
+                  </div>
+                  <div class="ui-brief">
+                    <div class="ui-brief-head">
+                      <span class="ui-mark" aria-hidden="true">N</span>
+                      <div>
+                        <span class="ui-brief-brand">Nova Labs</span>
+                        <span class="ui-brief-title">Spring Drop</span>
+                      </div>
+                    </div>
+                    <div class="ui-brief-fields">
+                      <div><span class="ui-field-k">Required reach</span><span class="ui-field-v">Mid 20K–50K</span></div>
+                      <div><span class="ui-field-k">Content format</span><span class="ui-field-v">Photo set</span></div>
+                      <span class="ui-badge ui-badge--sm">81% match</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card card--pad">
+                  <span class="ui-kicker ui-kicker--sky">Verified creator profiles</span>
+                  <div class="ui-profile">
+                    <span class="avatar" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Leo Cruz</span>
+                      <span class="ui-profile-meta">Eco lifestyle · 12.4K</span>
+                      <span class="ui-verified">Kinbase verified</span>
+                    </div>
+                    <span class="ui-badge ui-badge--sm">92% match</span>
+                  </div>
+                  <div class="ui-profile">
+                    <span class="avatar" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Lia Gerira</span>
+                      <span class="ui-profile-meta">Sustainable living · 8.1K</span>
+                      <span class="ui-verified">Kinbase verified</span>
+                    </div>
+                    <span class="ui-badge ui-badge--sm">88% match</span>
+                  </div>
+                  <div class="ui-profile">
+                    <span class="avatar" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Niko Fern</span>
+                      <span class="ui-profile-meta">Slow travel · 5.6K</span>
+                      <span class="ui-verified">Kinbase verified</span>
+                    </div>
+                    <span class="ui-badge ui-badge--sm">90% match</span>
+                  </div>
+                  <div class="ui-profile">
+                    <span class="avatar" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Mara Sol</span>
+                      <span class="ui-profile-meta">Conscious beauty · 6.8K</span>
+                      <span class="ui-verified">Kinbase verified</span>
+                    </div>
+                    <span class="ui-badge ui-badge--sm">86% match</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 · platform -->
+    <article class="slide slide--platform" data-theme="dawn" data-label="Platform">
+      <div class="s-eyebrow"><span class="eyebrow enter" style="--d:0">The platform</span></div>
+
+      <div class="s-main platform">
+        <h2 class="enter" style="--d:1">Centralized and seamless management.</h2>
+        <p class="lede enter" style="--d:2">One dashboard manages the whole deal, from first term to final payment.</p>
+
+        <div class="enter" style="--d:3">
+          <figure class="panel panel--ui panel--wide">
+            <div class="panel-tag"><b>Fig. 03</b><span>The deal, end to end</span></div>
+            <div class="panel-fig">
+              <div class="ui-deal" role="group" aria-label="Deal status">
+                <div>
+                  <span class="ui-deal-k">Deal KB-0142</span>
+                  <span class="ui-deal-v">Luna Active <span>× @alex_j</span></span>
+                </div>
+                <div class="ui-progress" role="img" aria-label="Milestone progress: terms signed, draft in review, payout pending">
+                  <span class="ui-progress-step is-done"><i></i>Terms signed</span>
+                  <span class="ui-progress-line is-done"></span>
+                  <span class="ui-progress-step is-now"><i></i>Draft review</span>
+                  <span class="ui-progress-line"></span>
+                  <span class="ui-progress-step"><i></i>Payout</span>
+                </div>
+                <div class="ui-deal-amount">
+                  <b>$4,500</b>
+                  <span>Held in escrow</span>
+                </div>
+              </div>
+
+              <div class="ui-steps ui-steps--deal" role="group" aria-label="Three stage deal pipeline">
+                <div class="card ui-step">
+                  <span class="ui-kicker ui-kicker--ink">01 / Contract</span>
+                  <strong class="ui-step-title">Terms Signed</strong>
+                  <p class="ui-step-copy">Scope, usage rights, and fixed milestone terms locked.</p>
+                  <div class="ui-step-meta">
+                    <div><span>Timeline</span><b>30 days</b></div>
+                    <div><span>Total fee</span><b>$4,500</b></div>
+                  </div>
+                  <div class="ui-step-foot">
+                    <span class="ui-pill ui-pill--ok">Signed</span>
+                    <span class="ui-step-note">Milestone 1 of 3</span>
+                  </div>
+                </div>
+                <div class="card ui-step">
+                  <span class="ui-kicker ui-kicker--ink">02 / Deliverables</span>
+                  <strong class="ui-step-title">Draft Review</strong>
+                  <p class="ui-step-copy">Direct brief upload, revision requests, and sign-off.</p>
+                  <div class="ui-step-meta">
+                    <div><span>Draft</span><b>v2 · due Fri</b></div>
+                    <div><span>Revisions</span><b>2 included</b></div>
+                  </div>
+                  <div class="ui-step-foot">
+                    <span class="ui-pill ui-pill--wait">In review</span>
+                    <span class="ui-step-note">Milestone 2 of 3</span>
+                  </div>
+                </div>
+                <div class="card ui-step ui-step--hold">
+                  <span class="ui-kicker">03 / Payments</span>
+                  <strong class="ui-step-title">Secure Escrow</strong>
+                  <p class="ui-step-copy">Milestone funds automatically released upon approval.</p>
+                  <div class="ui-step-meta">
+                    <div><span>Funded</span><b>100%</b></div>
+                    <div><span>Release</span><b>On approval</b></div>
+                  </div>
+                  <div class="ui-step-foot">
+                    <span class="ui-pill ui-pill--hold">In escrow</span>
+                    <span class="ui-step-note">$4,500</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 · validation -->
+    <article class="slide slide--validation" data-theme="dawn" data-label="Validation">
+      <div class="s-eyebrow"><span class="eyebrow enter" style="--d:0">Validation</span></div>
+
+      <div class="s-main two-col two-col--copy validation">
+        <div>
+          <h2 class="enter" style="--d:1">Proven <span style="white-space:nowrap">problem-solution</span> fit.</h2>
+
+          <div class="insights">
+            <div class="insight enter" style="--d:2">
+              <p>Brands want authentic, high-converting partnerships.</p>
+            </div>
+            <div class="insight enter" style="--d:3">
+              <p>Small creators need a transparent platform to access them.</p>
+            </div>
+            <div class="insight enter" style="--d:4">
+              <p>Automated payments and clear milestones are essential for building trust.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="enter ui-col" style="--d:2">
+          <figure class="panel panel--ui">
+            <div class="panel-tag"><b>Fig. 04</b><span>Validated signals</span></div>
+            <div class="panel-fig">
+              <div class="ui-signals" role="group" aria-label="Three validated pilot signals">
+                <div class="card ui-signal">
+                  <span class="ui-signal-idx">01</span>
+                  <div>
+                    <strong class="ui-signal-title">Brand Demand for Authenticity</strong>
+                    <p class="ui-signal-copy">94% of pilot brands report higher conversion rates using micro-creators.</p>
+                  </div>
+                </div>
+                <div class="card ui-signal">
+                  <span class="ui-signal-idx">02</span>
+                  <div>
+                    <strong class="ui-signal-title">Creator Access &amp; Retention</strong>
+                    <p class="ui-signal-copy">Zero-friction application process drove 500+ organic signups in week one.</p>
+                  </div>
+                </div>
+                <div class="card ui-signal ui-signal--signal">
+                  <span class="ui-signal-idx">03</span>
+                  <div>
+                    <strong class="ui-signal-title">Escrow &amp; Trust Mechanism</strong>
+                    <p class="ui-signal-copy">100% milestone payout compliance with zero disputes recorded during pilot.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </article>
+
+    <!-- 06 · the ask -->
+    <article class="slide slide--ask" data-theme="dawn" data-label="Next &amp; the ask">
+      <div class="s-eyebrow"><span class="eyebrow enter" style="--d:0">Next</span></div>
+
+      <div class="s-main ask">
+        <h2 class="enter" style="--d:1">Transforming creator marketing.</h2>
+
+        <div class="ask-grid">
+          <div>
+            <div class="ask-step enter" style="--d:2">
+              <span class="step-label">Next step</span>
+              <p>Expanding AI match recommendations to seamlessly connect brands with niche micro-creators.</p>
+            </div>
+            <div class="ask-step enter" style="--d:3">
+              <span class="step-label">The ask</span>
+              <p>Currently seeking pilot partners to onboard the first 500 matches.</p>
+            </div>
+          </div>
+
+          <div class="enter ui-col" style="--d:2">
+          <figure class="panel panel--ui">
+            <div class="panel-tag"><b>Fig. 05</b><span>Matching engine</span></div>
+            <div class="panel-fig">
+              <div class="card ui-ask">
+                <div>
+                  <span class="ui-kicker ui-kicker--sky">Pilot target goal</span>
+                  <h3 class="ui-ask-title">500 AI Matches</h3>
+                  <p class="ui-copy">Actively onboarding our first cohort of pilot brand partners and micro-creators.</p>
+                </div>
+                <div class="card card--soft ui-status">
+                  <div class="ui-status-head">
+                    <span class="ui-kicker">AI match preview</span>
+                    <span class="ui-accuracy">98.4% <small>accuracy</small></span>
+                  </div>
+                  <div class="ui-match-mini">
+                    <span class="avatar avatar--sm" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Green Sarah</span>
+                      <span class="ui-profile-meta">Sustainable · 1.2K</span>
+                    </div>
+                    <span class="ui-score">96%</span>
+                  </div>
+                  <div class="ui-match-mini">
+                    <span class="avatar avatar--sm" aria-hidden="true"></span>
+                    <div>
+                      <span class="ui-profile-name">Minimal Molly</span>
+                      <span class="ui-profile-meta">Minimal living · 1.2K</span>
+                    </div>
+                    <span class="ui-score">92%</span>
+                  </div>
+                  <div class="ui-confidence"><span>Match confidence</span><span>92%</span></div>
+                  <div class="ui-status-track"><i class="ui-status-fill" style="--w:92%"></i></div>
+                </div>
+              </div>
+            </div>
+          </figure>
+          </div>
+        </div>
+      </div>
+
+      <div class="ask-foot enter" style="--d:5">
+        <span class="thanks">Thank you<span class="dot">.</span></span>
+        <span class="ask-sign">Oscar &middot; Founder, Kinbase</span>
+      </div>
+    </article>
+
+    <div class="sun" aria-hidden="true"><i class="sun-disc"></i></div>
+
+    <div class="grain" aria-hidden="true"></div>
+    <div class="sweep" aria-hidden="true"></div>
+
+    <div class="chrome">
+      <div class="brand">Kinbase</div>
+      <div class="rail" id="rail" role="group" aria-label="Jump to slide"></div>
+      <div class="rail-sun" id="railSun" aria-hidden="true"></div>
+      <div class="counter" id="counter">01 / 06</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  var stage   = document.getElementById('stage');
+  var slides  = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var rail    = document.getElementById('rail');
+  var railSun = document.getElementById('railSun');
+  var counter = document.getElementById('counter');
+  var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var total   = slides.length;
+  var cur     = 0;
+  var settleTimer;
+  var sunTimer;
+  var sweepTimer;
+
+  /* ---------- rail ---------- */
+  slides.forEach(function (slide, idx) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Slide ' + (idx + 1) + ' — ' + (slide.dataset.label || 'Slide'));
+    b.innerHTML = '<span></span>';
+    b.addEventListener('click', function () { go(idx); });
+    rail.appendChild(b);
+  });
+  var ticks = Array.prototype.slice.call(rail.children);
+
+  /* ---------- chrome ---------- */
+  function syncChrome() {
+    stage.dataset.theme = slides[cur].dataset.theme || 'dawn';
+    stage.dataset.first = cur === 0 ? 'true' : 'false';
+    ticks.forEach(function (t, i) {
+      t.setAttribute('aria-current', i === cur ? 'true' : 'false');
+    });
+    railSun.style.transform = 'translateX(' + (cur * 34) + 'px)';
+    counter.textContent =
+      String(cur + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    slides.forEach(function (s, i) {
+      s.setAttribute('aria-hidden', i === cur ? 'false' : 'true');
+    });
+    if (history.replaceState) history.replaceState(null, '', '#' + (cur + 1));
+  }
+
+  /* ---------- navigation ---------- */
+  function show(n) {
+    n = Math.max(0, Math.min(total - 1, n));
+    if (n === cur && slides[n].dataset.state === 'active') return;
+
+    var prev = slides[cur];
+    var prevIndex = cur;
+    var wasCover = cur === 0;
+
+    stage.dataset.dir = n < prevIndex ? 'back' : 'fwd';
+
+    slides.forEach(function (s) {
+      s.dataset.state = '';
+      s.classList.remove('is-settled');
+    });
+
+    if (prev && prev !== slides[n] && !reduce.matches) {
+      clearTimeout(prev._leaveTimer);
+      prev.classList.add('is-leaving');
+      prev._leaveTimer = setTimeout(function () {
+        prev.classList.remove('is-leaving');
+      }, 900);
+    }
+
+    cur = n;
+    var next = slides[cur];
+    next.classList.remove('is-leaving');
+    clearTimeout(next._leaveTimer);
+
+    void next.offsetWidth;
+    next.dataset.state = 'active';
+
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function () {
+      next.classList.add('is-settled');
+    }, 2400);
+
+    syncChrome();
+
+    if (!reduce.matches) {
+      clearTimeout(sweepTimer);
+      stage.classList.remove('is-sweeping');
+      void stage.offsetWidth;
+      stage.classList.add('is-sweeping');
+      sweepTimer = setTimeout(function () {
+        stage.classList.remove('is-sweeping');
+      }, 1300);
+    }
+
+    if (!reduce.matches && wasCover !== (cur === 0)) {
+      clearTimeout(sunTimer);
+      stage.classList.remove('is-sun-moving');
+      void stage.offsetWidth;
+      stage.classList.add('is-sun-moving');
+      sunTimer = setTimeout(function () {
+        stage.classList.remove('is-sun-moving');
+      }, 2100);
+    }
+  }
+  function go(n) { show(n); }
+
+  /* ---------- fit the fixed stage ---------- */
+  var viewport = document.querySelector('.viewport');
+  function fit() {
+    var w = window.innerWidth || document.documentElement.clientWidth || 0;
+    var h = window.innerHeight || document.documentElement.clientHeight || 0;
+    var s = Math.min(w / 1600, h / 900);
+    if (!isFinite(s) || s <= 0) s = 1;
+    stage.style.setProperty('--s', s);
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  document.addEventListener('visibilitychange', fit);
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(viewport);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+
+  /* ---------- keyboard ---------- */
+  window.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if ((e.key === ' ' || e.key === 'Enter') && e.target && e.target.closest && e.target.closest('button')) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': case 'Enter':
+        e.preventDefault(); go(cur + 1); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); go(cur - 1); break;
+      case 'Home':
+        e.preventDefault(); go(0); break;
+      case 'End':
+        e.preventDefault(); go(total - 1); break;
+      case 'f': case 'F':
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        break;
+    }
+  });
+
+  /* ---------- swipe ---------- */
+  var sx = 0, sy = 0, tracking = false;
+  stage.addEventListener('pointerdown', function (e) {
+    sx = e.clientX; sy = e.clientY; tracking = true;
+  });
+  stage.addEventListener('pointerup', function (e) {
+    if (!tracking) return;
+    tracking = false;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > 80 && Math.abs(dy) < 60) go(cur + (dx < 0 ? 1 : -1));
+  });
+
+  /* ---------- deep link ---------- */
+  if (!reduce.matches) document.documentElement.classList.add('motion');
+
+  var start = parseInt((location.hash || '').replace('#', ''), 10);
+  if (start > 1 && start <= total) {
+    slides.forEach(function (s) { s.dataset.state = ''; });
+    cur = start - 1;
+    slides[cur].dataset.state = 'active';
+    slides[cur].classList.add('is-settled');
+  }
+  syncChrome();
+})();
+</script>
+</body>
+</html>
